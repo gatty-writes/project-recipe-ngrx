@@ -8,7 +8,7 @@ import { Recipe } from '../recipe.model';
 })
 export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [
-    new Recipe('test recipe', 'test recipe description', 'https://images.app.goo.gl/SoD7MxmLG44feejG7')
+    new Recipe('test recipe', 'test recipe description', 'https://www.skinnytaste.com/wp-content/uploads/2019/07/Perfectly-Grilled-Zucchini-11-1.jpg')
   ];
 
   constructor() { }
