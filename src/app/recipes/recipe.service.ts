@@ -1,11 +1,11 @@
 import { Recipe } from './recipe.model';
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Ingrediant } from '../shared/ingrediant.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable()
 export class RecipeService {
-    public recipeSelected = new EventEmitter<Recipe>();
+
     private recipes: Recipe[] = [
         new Recipe('Zucchini', 'Perfectly grilled zucchini recipe', 'https://www.skinnytaste.com/wp-content/uploads/2019/07/Perfectly-Grilled-Zucchini-11-1.jpg',
         [
