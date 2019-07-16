@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./shopping-edit.component.scss']
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
-  @Output() ingrediantAdded = new EventEmitter<Ingrediant>();
   @ViewChild('f', {static: true}) slForm: NgForm;
   editMode: boolean = false;
   editedItemIndex: number;
