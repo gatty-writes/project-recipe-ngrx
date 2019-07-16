@@ -1,8 +1,10 @@
 import { Ingrediant } from '../shared/ingrediant.model';
 import { EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
 
 export class ShoppingListService {
     public ingrediantAdded = new EventEmitter<Ingrediant[]>();
+    public startedEditing = new Subject<number>();
     private ingrediants: Ingrediant[] = [
         new Ingrediant('Apples', 5),
         new Ingrediant('Tomattoes', 10)
