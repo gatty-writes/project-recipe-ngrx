@@ -2,10 +2,11 @@ import { Recipe } from './recipe.model';
 import { Injectable } from '@angular/core';
 import { Ingrediant } from '../shared/ingrediant.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class RecipeService {
-
+    public recipeChanged = new Subject<Recipe[]>();
     private recipes: Recipe[] = [
         new Recipe('Zucchini', 'Perfectly grilled zucchini recipe', 'https://www.skinnytaste.com/wp-content/uploads/2019/07/Perfectly-Grilled-Zucchini-11-1.jpg',
         [
@@ -39,5 +40,15 @@ export class RecipeService {
 
     getRecipe(index: number) {
         return this.recipes[index];
+    }
+
+    updateRecipe(index: number, newRecipe: Recipe) {
+        this.recipes[index] = newRecipe;
+        this.recipeChanged.next(this.recipes.slice());
+    }
+
+    addRecipe(newRecipe: Recipe) {
+        this.recipes.push(newRecipe);
+        this.recipeChanged.next(this.recipes.slice());
     }
 }
