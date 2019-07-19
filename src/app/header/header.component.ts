@@ -15,4 +15,8 @@ export class HeaderComponent implements OnInit {
   sendToDataStore() {
     this.dsService.storeRecipes();
   }
+
+  fetchFromStore() {
+    this.dsService.fetchRecipe();
+  }
 }

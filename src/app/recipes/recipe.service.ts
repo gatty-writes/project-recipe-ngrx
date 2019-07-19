@@ -30,6 +30,7 @@ export class RecipeService {
     ];
 
     constructor(private slService: ShoppingListService) {}
+
     getRecipes() {
         return this.recipes.slice();
     }
@@ -54,6 +55,11 @@ export class RecipeService {
 
     deleteRecipe(index: number) {
         this.recipes.splice(index, 1);
+        this.recipeChanged.next(this.recipes.slice());
+    }
+
+    setRecipe(recipes: Recipe[]) {
+        this.recipes = recipes;
         this.recipeChanged.next(this.recipes.slice());
     }
 }
