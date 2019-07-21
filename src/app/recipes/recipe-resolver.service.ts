@@ -11,12 +11,12 @@ export class RecipeResolverService implements Resolve<Recipe[]> {
         private recipeService: RecipeService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        // const recipes = this.recipeService.getRecipes();
-        // if(recipes.length === 0 ) {
+        const recipes = this.recipeService.getRecipes();
+        if(recipes.length === 0 ) {
             return this.dsService.fetchRecipe();
-        // } else {
-            // return recipes;
-        // } 
+        } else {
+            return recipes;
+        } 
     }
 
 }
