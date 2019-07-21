@@ -17,6 +17,6 @@ export class HeaderComponent implements OnInit {
   }
 
   fetchFromStore() {
-    this.dsService.fetchRecipe();
+    this.dsService.fetchRecipe().subscribe();
   }
 }
