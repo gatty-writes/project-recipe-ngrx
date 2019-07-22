@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 export class AuthComponent implements OnInit {
   isLoginMode: boolean = true;
   isLoading: boolean = false;
+  errorMessage: string = null;
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
@@ -34,6 +35,7 @@ export class AuthComponent implements OnInit {
         this.isLoading = false;
       }, err => {
         console.log('sign up failure reponse is ' + err);
+        this.errorMessage = err;
         this.isLoading = false;
       });
     }
