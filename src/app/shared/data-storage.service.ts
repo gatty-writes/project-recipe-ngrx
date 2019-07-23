@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from '../recipes/recipe.service';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, take, exhaustMap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class DataStorageService {
     constructor(private http: HttpClient,
-        private recipeService: RecipeService) {
+        private recipeService: RecipeService, 
+        private authService: AuthService) {
     }
 
     storeRecipes() {
@@ -20,15 +22,27 @@ export class DataStorageService {
     }
 
     fetchRecipe() {
-        return this.http.get<Recipe[]>('https://ng-recipe-backend-d5cac.firebaseio.com/recipes.json')
-        .pipe(
-            map(recipes => {
-                return recipes.map(recipe => {
-                    return { ...recipe, ingrediants: recipe.ingrediants ? recipe.ingrediants : [] }
-                });
-            }
-        ), tap(recipes => {
+        return this.authService.user$.pipe(
+          take(1),
+          exhaustMap(user => {
+            return this.http.get<Recipe[]>(
+              'https://ng-recipe-backend-d5cac.firebaseio.com/recipes.json',
+              {
+                  params: new HttpParams().set('auth', user.token)
+              }
+            );
+          }),
+          map(recipes => {
+            return recipes.map(recipe => {
+              return {
+                ...recipe,
+                ingredients: recipe.ingrediants ? recipe.ingrediants : []
+              };
+            });
+          }),
+          tap(recipes => {
             this.recipeService.setRecipe(recipes);
-        }))
+          })
+        );
     }
 }
