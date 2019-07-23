@@ -35,6 +35,7 @@ export class AuthComponent implements OnInit {
     } else {
       authObs = this.authService.signup(email, password);
     }
+    
     authObs.subscribe(resData => {
       console.log('sign up reponse is ' + resData);
       this.isLoading = false;
