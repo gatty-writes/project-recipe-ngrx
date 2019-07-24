@@ -5,7 +5,8 @@
         </div> -->
         <app-alert 
             [message]="errorMessage" 
-            *ngIf="errorMessage">
+            *ngIf="errorMessage"
+            (closeAlert)="closeErrorBox($event)">
         </app-alert>
         <div *ngIf="isLoading" class="center-align">
             <app-loading-spinner></app-loading-spinner>

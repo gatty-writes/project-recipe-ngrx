@@ -49,6 +49,7 @@ export class AuthComponent implements OnInit {
     form.reset();
   }
 
-
-
+  closeErrorBox(event: any) {
+    this.errorMessage= null;
+  }
 }
