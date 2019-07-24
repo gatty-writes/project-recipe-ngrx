@@ -23,6 +23,7 @@ import { RecipeResolverService } from './recipes/recipe-resolver.service';
 import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
   providers: [  RecipeService, 
                 ShoppingListService, 
                 DataStorageService, 
-                RecipeResolverService, 
+                RecipeResolverService,
+                AuthGuard,
                 { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
