@@ -12,9 +12,7 @@ import { DataStorageService } from './shared/data-storage.service';
 import { RecipeResolverService } from './recipes/recipe-resolver.service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { AuthGuard } from './auth/auth.guard';
-import { ShoppingListModule } from './shopping-list/shopping-list.module';
 import { SharedModule } from './shared/shared.module';
-import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -27,9 +25,7 @@ import { AuthModule } from './auth/auth.module';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ShoppingListModule,
-    SharedModule,
-    AuthModule
+    SharedModule
   ],
   providers: [  RecipeService,
                 ShoppingListService,
