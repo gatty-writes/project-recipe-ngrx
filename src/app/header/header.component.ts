@@ -9,10 +9,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  isAuthenticated: boolean = false;
+  isAuthenticated = false;
   subs = new Subscription();
   constructor(private dsService: DataStorageService,
-    private authService: AuthService) { }
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.subs = this.authService.user$.subscribe(user => {
