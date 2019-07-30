@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Ingrediant } from '../shared/ingrediant.model';
 import { ShoppingListService } from './shopping-list.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-shopping-list',
@@ -9,16 +10,18 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  ingrediants: Ingrediant[];
+  ingrediants: Observable<{ ingrediants: Ingrediant[] }>;
   private igChangeSub: Subscription;
-  constructor(private slService: ShoppingListService) {
+  constructor(private slService: ShoppingListService,
+              private store: Store<{ shoppingList: {ingrediants: Ingrediant[]} }>) {
   }
 
   ngOnInit() {
-    this.ingrediants = this.slService.getIngrediants();
-    this.igChangeSub = this.slService.ingrediantAdded.subscribe((ingrediants: Ingrediant[]) => {
-      this.ingrediants = ingrediants;
-    })
+    // this.ingrediants = this.slService.getIngrediants();
+    // this.igChangeSub = this.slService.ingrediantAdded.subscribe((ingrediants: Ingrediant[]) => {
+    //   this.ingrediants = ingrediants;
+    // })
+    this.ingrediants = this.store.select('shoppingList');
   }
 
   editShoppingItem(index: number) {
@@ -26,7 +29,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.igChangeSub.unsubscribe();
+    // this.igChangeSub.unsubscribe();
   }
 
 }
