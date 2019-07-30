@@ -1,6 +1,5 @@
-import { Ingrediant } from '../shared/ingrediant.model';
-import { EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Ingrediant } from '../shared/ingrediant.model';
 
 export class ShoppingListService {
     public ingrediantAdded = new Subject<Ingrediant[]>();
