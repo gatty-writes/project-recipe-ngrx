@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { SharedModule } from './shared/shared.module';
 import { ShoppingListReducer } from './shopping-list/store/shopping-list.reducer';
 import * as AppReducer from '../app/store/app.reducer';
+import { AuthEffects } from './auth/store/auth.effects';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import * as AppReducer from '../app/store/app.reducer';
     ReactiveFormsModule,
     HttpClientModule,
     StoreModule.forRoot(AppReducer.appReducer),
+    EffectsModule.forRoot([AuthEffects]),
     SharedModule
   ],
   providers: [  RecipeService,

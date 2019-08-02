@@ -2,9 +2,13 @@ import { Component, OnInit, ComponentFactoryResolver, ViewChild, OnDestroy } fro
 import { NgForm } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+
 import { AuthService, AuthResponseData } from './auth.service';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
+import * as fromApp from '../store/app.reducer';
+import * as AuthActions from '../auth/store/auth.actions';
 
 @Component({
   selector: 'app-auth',
@@ -17,11 +21,17 @@ export class AuthComponent implements OnInit, OnDestroy {
   errorMessage: string = null;
   @ViewChild(PlaceholderDirective, { static: true }) alertHost: PlaceholderDirective;
   private subs = new Subscription();
+
   constructor(private authService: AuthService, 
     private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver) { }
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
+    this.store.select('auth').subscribe(authState => {
+      this.isLoading = authState.loading;
+      this.errorMessage = authState.authError;
+    })
   }
 
   ngOnDestroy() {
@@ -44,21 +54,25 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     
     if(this.isLoginMode) {
-      authObs = this.authService.signIn(email, password);
+      //replacint the below line with the newly added effects
+      // authObs = this.authService.signIn(email, password);
+      this.store.dispatch(new AuthActions.LoginStart({ email: email, password: password}));
     } else {
       authObs = this.authService.signup(email, password);
     }
 
-    authObs.subscribe(resData => {
-      console.log('sign up reponse is ' + resData);
-      this.isLoading = false;
-      this.router.navigate(['/recipes']);
-    }, err => {
-      console.log('sign up failure reponse is ' + err);
-      this.errorMessage = err;
-      this.showErrorAlert(err);
-      this.isLoading = false;
-    });
+
+
+    // authObs.subscribe(resData => {
+    //   console.log('sign up reponse is ' + resData);
+    //   this.isLoading = false;
+    //   this.router.navigate(['/recipes']);
+    // }, err => {
+    //   console.log('sign up failure reponse is ' + err);
+    //   this.errorMessage = err;
+    //   this.showErrorAlert(err);
+    //   this.isLoading = false;
+    // });
     form.reset();
   }
 
