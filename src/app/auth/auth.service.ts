@@ -3,9 +3,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 
 import { User } from './user.model';
+import * as FromApp from '../store/app.reducer';
+import * as AuthActions from './store/auth.actions';
 
 export interface AuthResponseData {
   kind: string;
@@ -21,10 +24,11 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  user$ = new BehaviorSubject<User>(null);
+  // user$ = new BehaviorSubject<User>(null);
   private autoLogoutTimer: any;
   constructor(private http: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private store: Store<FromApp.AppState>) { }
 
   signup(email: string, password: string) {
     return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`, {
@@ -47,7 +51,8 @@ export class AuthService {
   }
 
   logout() {
-    this.user$.next(null);
+    // this.user$.next(null);
+    this.store.dispatch(new AuthActions.Logout());
     localStorage.removeItem('userData');
     if(this.autoLogoutTimer) {
       clearTimeout(this.autoLogoutTimer);
@@ -68,7 +73,13 @@ export class AuthService {
 
     const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
     if(loadedUser.token) {
-      this.user$.next(loadedUser);
+      // this.user$.next(loadedUser);
+      this.store.dispatch(new AuthActions.Login({
+        email: loadedUser.email,
+        id: loadedUser.id,
+        token: loadedUser.token,
+        expiryDate: new Date(userData._tokenExpirationDate)
+      }));
       this.autoLogout(new Date(userData._tokenExpirationDate).getTime() - new Date().getTime());
     }
   }
@@ -93,9 +104,9 @@ export class AuthService {
       case 'INVALID_PASSWORD':
         error = 'Password is incorrect'
         break;
-        case 'EMAIL_NOT_FOUND':
-          error = 'Email not found'
-          break;
+      case 'EMAIL_NOT_FOUND':
+        error = 'Email not found'
+        break;
     }
     return throwError(error);
   }
@@ -108,7 +119,13 @@ export class AuthService {
           token, 
           expiryDate
         );
-        this.user$.next(user);
+        // this.user$.next(user);
+        this.store.dispatch(new AuthActions.Login({
+          email: email,
+          id: localId,
+          token: token,
+          expiryDate: expiryDate
+        }));
         this.autoLogout(expiresIn * 1000);
         localStorage.setItem('userData', JSON.stringify(user));
   }
