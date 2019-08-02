@@ -1,12 +1,12 @@
 import { Action } from '@ngrx/store';
 import { Ingrediant } from 'src/app/shared/ingrediant.model';
 
-export const ADD_INGREDIANT = 'ADD_INGREDIANT';
-export const ADD_INGREDIANTS = 'ADD_INGREDIANTS';
-export const UPDATE_INGREDIANT = 'UPDATE_INGREDIANT';
-export const DELETE_INGREDIANT = 'DELETE_INGREDIANT';
-export const START_EDIT = 'START_EDIT';
-export const STOP_EDIT = 'STOP_EDIT';
+export const ADD_INGREDIANT = '[Shopping List] Add Ingrediant';
+export const ADD_INGREDIANTS = '[Shopping List] Add Ingrediants';
+export const UPDATE_INGREDIANT = '[Shopping List] Update Ingrediant';
+export const DELETE_INGREDIANT = '[Shopping List] Delete Ingrediant';
+export const START_EDIT = '[Shopping List] Start Edit';
+export const STOP_EDIT = '[Shopping List] Stop Edit';
 
 export class AddIngrediant implements Action {
     readonly type = ADD_INGREDIANT;
