@@ -32,7 +32,7 @@ export class AuthEffects {
             }).pipe(
                 map((responseData) => {
                     const expiryDate = new Date(new Date().getTime() + +responseData.expiresIn * 1000)
-                    return new AuthActions.Login({
+                    return new AuthActions.AuthenticateSuccess({
                         email: responseData.email,
                         id: responseData.localId,
                         token: responseData.idToken,
@@ -42,7 +42,7 @@ export class AuthEffects {
                 catchError((errorResponse) => {
                     let error = "Unknown error occured";
                     if (!errorResponse.error && !errorResponse.error.error.message) {
-                        return of(new AuthActions.LoginFail(error));
+                        return of(new AuthActions.AuthenticateFail(error));
                     }
 
                     switch (errorResponse.error.error.message) {
@@ -56,14 +56,14 @@ export class AuthEffects {
                             error = 'Email not found'
                             break;
                     }
-                    return of(new AuthActions.LoginFail(error));
+                    return of(new AuthActions.AuthenticateFail(error));
                 }));
         })
     );
 
     @Effect({ dispatch: false })
     authSuccess = this.actions$.pipe(
-        ofType(AuthActions.LOGIN),
+        ofType(AuthActions.AUTHENTICATE_SUCCESS),
         tap(() => {
             this.router.navigate(['/']);
         })
