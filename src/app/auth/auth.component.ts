@@ -58,10 +58,11 @@ export class AuthComponent implements OnInit, OnDestroy {
     
     if(this.isLoginMode) {
       //replacint the below line with the newly added effects
-      // authObs = this.authService.signIn(email, password);
+      //authObs = this.authService.signIn(email, password);
       this.store.dispatch(new AuthActions.LoginStart({ email: email, password: password}));
     } else {
-      authObs = this.authService.signup(email, password);
+      // authObs = this.authService.signup(email, password);
+      this.store.dispatch(new AuthActions.SignupStart({ email: email, password: password}));
     }
 
 
