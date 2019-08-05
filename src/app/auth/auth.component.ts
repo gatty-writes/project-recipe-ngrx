@@ -28,7 +28,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
-    this.store.select('auth').subscribe(authState => {
+    this.subs = this.store.select('auth').subscribe(authState => {
       this.isLoading = authState.loading;
       this.errorMessage = authState.authError;
       if(this.errorMessage) {
@@ -51,7 +51,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     if(!form.valid) {
       return;
     }
-    let authObs = new Observable<AuthResponseData>();
+    // let authObs = new Observable<AuthResponseData>();
     const email = form.value.email;
     const password = form.value.password;
     this.isLoading = true;
@@ -81,7 +81,8 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   closeErrorBox(event: any) {
-    this.errorMessage= null;
+    // this.errorMessage= null;
+    this.store.dispatch(new AuthActions.ClearError());
   }
 
   private showErrorAlert(errorMessage: string) {
