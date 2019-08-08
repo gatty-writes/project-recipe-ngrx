@@ -7,6 +7,7 @@ import { Injectable, ErrorHandler } from '@angular/core';
 import { Router } from '@angular/router';
 
 import * as AuthActions from '../store/auth.actions';
+import { User } from '../user.model';
 
 export interface AuthResponseData {
     kind: string;
@@ -57,8 +58,8 @@ export class AuthEffects {
     );
 
     @Effect({ dispatch: false })
-    authSuccess = this.actions$.pipe(
-        ofType(AuthActions.AUTHENTICATE_SUCCESS),
+    authReidrect = this.actions$.pipe(
+        ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
         tap(() => {
             this.router.navigate(['/']);
         })
@@ -66,6 +67,8 @@ export class AuthEffects {
 
     private handleSuccess(responseData: AuthResponseData) {
         const expiryDate = new Date(new Date().getTime() + +responseData.expiresIn * 1000);
+        const user = new User(responseData.email, responseData.localId, responseData.idToken, expiryDate); 
+        localStorage.setItem('userData', JSON.stringify(user));
         return new AuthActions.AuthenticateSuccess({
             email: responseData.email,
             id: responseData.localId,

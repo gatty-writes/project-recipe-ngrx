@@ -30,34 +30,34 @@ export class AuthService {
     private router: Router,
     private store: Store<FromApp.AppState>) { }
 
-  signup(email: string, password: string) {
-    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`, {
-      email: email,
-      password: password,
-      returnSecureToken: true
-    }).pipe(catchError(this.handleError), tap(resp => {
-       this.handleAuthenicatedUser(resp.email, resp.localId, resp.idToken, +resp.expiresIn)
-    }))
-  }
+  // signup(email: string, password: string) {
+  //   return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`, {
+  //     email: email,
+  //     password: password,
+  //     returnSecureToken: true
+  //   }).pipe(catchError(this.handleError), tap(resp => {
+  //      this.handleAuthenicatedUser(resp.email, resp.localId, resp.idToken, +resp.expiresIn)
+  //   }))
+  // }
 
-  signIn(email: string, password: string) {
-    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`, {
-      email: email,
-      password: password,
-      returnSecureToken: true
-    }).pipe(catchError(this.handleError), tap(resp => {
-      this.handleAuthenicatedUser(resp.email, resp.localId, resp.idToken, +resp.expiresIn)
-   }));
-  }
+  // signIn(email: string, password: string) {
+  //   return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`, {
+  //     email: email,
+  //     password: password,
+  //     returnSecureToken: true
+  //   }).pipe(catchError(this.handleError), tap(resp => {
+  //     this.handleAuthenicatedUser(resp.email, resp.localId, resp.idToken, +resp.expiresIn)
+  //  }));
+  // }
 
   logout() {
     // this.user$.next(null);
-    this.store.dispatch(new AuthActions.Logout());
+    // this.store.dispatch(new AuthActions.Logout());
     localStorage.removeItem('userData');
     if(this.autoLogoutTimer) {
       clearTimeout(this.autoLogoutTimer);
     }
-    this.router.navigate(['/auth']);
+    // this.router.navigate(['/auth']);
   }
 
   autoLogin() {
